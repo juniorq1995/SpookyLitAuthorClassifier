@@ -34,7 +34,7 @@ text - some text written by one of the authors
 author - the author of the sentence (EAP: Edgar Allan Poe, HPL: HP Lovecraft; MWS: Mary Wollstonecraft Shelley)
 
 Submissions are evaluated using multi-class logarithmic loss. Each id has one true class. For each id, you must submit a predicted probability for each author. The formula is then:
-logloss=−1N∑i=1N∑j=1Myijlog(pij),
+logloss=−1/N∑i(N∑j(y(ij)log(p(ij)))),
 where N is the number of observations in the test set, M is the number of class labels (3 classes), loglog is the natural logarithm, yijyij is 1 if observation ii belongs to class jj and 0 otherwise, and pijpij is the predicted probability that observation ii belongs to class jj.
 
 The submitted probabilities for a given sentences are not required to sum to one because they are rescaled prior to being scored (each row is divided by the row sum). In order to avoid the extremes of the log function, predicted probabilities are replaced with max(min(p,1−10−15),10−15)max(min(p,1−10−15),10−15).
