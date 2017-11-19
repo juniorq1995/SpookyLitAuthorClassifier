@@ -20,19 +20,15 @@ algorithm with. Following this, there is a great deal of fine-tuning required in
 achieve a high accuracy with the test dataset. Once a satisfactory success rate has
 been achieved the classifier will be ready to face the nightmares of librarians!
 
-Milestones:
-1. Process the dataset with a Natural Language Processor MatlabNPL
-a. In Matlab, visualize the data with different plots of different scales to
-understand the data
-b. Examine the dataset and run small tests to determine an appropriate
-starting Regularization Parameter
-c. Create additional columns containing sentence properties/features
-(punctuation, use of pronouns, etc.)
-2. Find a solution to the matrix problem using Least Squares Multi-Class
-Classification with a Regularization Parameter
-a. Import the dataset and its labels and compute the missing vector using the
-LSC
-3. Evaluate the classifier by having it output the probability that an excerpt belongs
-to a certain author
-a. Increase/decrease the Regularization Parameter based on the classifiers
-performance and its bias/variance
+The dataset contains text from works of fiction written by spooky authors of the public domain: Edgar Allan Poe, HP Lovecraft and Mary Shelley. The data was prepared by chunking larger texts into sentences using CoreNLP's MaxEnt sentence tokenizer, so you may notice the odd non-sentence here and there. The objective is to accurately identify the author of the sentences in the test set.
+
+File descriptions
+
+train.csv - the training set
+test.csv - the test set
+sample_submission.csv - a sample submission file in the correct format
+Data fields
+
+id - a unique identifier for each sentence
+text - some text written by one of the authors
+author - the author of the sentence (EAP: Edgar Allan Poe, HPL: HP Lovecraft; MWS: Mary Wollstonecraft Shelley)
