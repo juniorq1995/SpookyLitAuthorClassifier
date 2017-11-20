@@ -1,6 +1,6 @@
-#Identifying the Authors of Spooky Literature Based On Their Writing Style
+# Identifying the Authors of Spooky Literature Based On Their Writing Style
 
-##Project Team: Junior Quintero, Thomas Hansen
+## Project Team: Junior Quintero, Thomas Hansen
 
 Librarians all around the world have to constantly live with in fear for their
 precious books. Bookworms, page-folding, humidity cause them to clutch their books
@@ -22,16 +22,16 @@ been achieved the classifier will be ready to face the nightmares of librarians!
 
 The dataset contains text from works of fiction written by spooky authors of the public domain: Edgar Allan Poe, HP Lovecraft and Mary Shelley. The data was prepared by chunking larger texts into sentences using CoreNLP's MaxEnt sentence tokenizer, so you may notice the odd non-sentence here and there. The objective is to accurately identify the author of the sentences in the test set.
 
-##File descriptions
+## File descriptions
 
-*train.csv - the training set
-*test.csv - the test set
-*sample_submission.csv - a sample submission file in the correct format
-*Data fields
+* train.csv - the training set
+* test.csv - the test set
+* sample_submission.csv - a sample submission file in the correct format
+* Data fields
 
-*id - a unique identifier for each sentence
-*text - some text written by one of the authors
-*author - the author of the sentence (EAP: Edgar Allan Poe, HPL: HP Lovecraft; MWS: Mary Wollstonecraft Shelley)
+* id - a unique identifier for each sentence
+* text - some text written by one of the authors
+* author - the author of the sentence (EAP: Edgar Allan Poe, HPL: HP Lovecraft; MWS: Mary Wollstonecraft Shelley)
 
 Submissions are evaluated using multi-class logarithmic loss. Each id has one true class. For each id, you must submit a predicted probability for each author. The formula is then:
 logloss=−1/N∑i(N∑j(y(ij)log(p(ij)))),
