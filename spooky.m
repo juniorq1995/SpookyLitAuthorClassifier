@@ -13,9 +13,9 @@ trainDataArray = table2array(trainDataTable);
 EAP = [];
 HPL = [];
 MWS = [];
-for i = 1:100
+for i = 1:length
     str = string(trainDataArray(i,2));
-    %disp(i);
+    disp('Huge Array Index' + length-i);
     %remove punctuation
     strn = regexprep(str,'[!@#$%^&*():;",.?<>/'']','');
     
@@ -43,6 +43,7 @@ EAP_Final = [EAP_Final;zeros(1,lengthEAP_Final);zeros(1,lengthEAP_Final);zeros(1
 
 EAP = [EAP;zeros(1,lengthEAP);zeros(1,lengthEAP);zeros(1,lengthEAP)];
 for j = 1:lengthEAP
+    disp('Inside Freq ' + lengthEAP-j);
     EAP(2,j) = sum(EAP(1,:) == EAP(1,j))/lengthEAP;
 end
 
@@ -54,6 +55,7 @@ end
 % Last figure is the frequency within divided by the frequency in others
 cmpEAP = [HPL MWS];
 for j = 1:lengthEAP
+    disp('Btw Freq ' + lengthEAP-j);
     EAP(3,j) = sum(cmpEAP(1,:) == EAP(1,j))/(lengthHPL + lengthMWS);
     numer = str2double(EAP(2,j));
     denom = str2double(EAP(3,j));
@@ -62,4 +64,17 @@ for j = 1:lengthEAP
     else
         EAP(4,j) = numer/denom;
     end
+end
+
+%format the lists
+for i = 1:lengthEAP_Final
+    disp('format-outer ' + lengthEAP_Final-i);
+   for j = 1:lengthEAP
+       disp('format-inner ' + lengthEAP-j);
+       if(EAP_Final(1,i) == EAP(1,j))
+           EAP_Final(2,i) = EAP(2,j);
+           EAP_Final(3,i) = EAP(3,j);
+           EAP_Final(4,i) = EAP(4,j);
+       end
+   end
 end
