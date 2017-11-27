@@ -42,20 +42,10 @@ end
 EAP_Final = [EAP_Final;zeros(1,lengthEAP_Final);zeros(1,lengthEAP_Final);zeros(1,lengthEAP_Final)];
 
 EAP = [EAP;zeros(1,lengthEAP);zeros(1,lengthEAP);zeros(1,lengthEAP)];
-for j = 1:lengthEAP
-    disp('Inside Freq ' + lengthEAP-j);
-    EAP(2,j) = sum(EAP(1,:) == EAP(1,j))/lengthEAP;
-end
-
-% Now that we have the frequency within it is time to look at the frequency
-% of a word one author uses relative to the other two authors. 
-% This fiqure is calculated by dividing the number of occurences of the word divided by
-% the number of elements nthe other two authors
-
-% Last figure is the frequency within divided by the frequency in others
 cmpEAP = [HPL MWS];
+disp('Calculations Begin');
 for j = 1:lengthEAP
-    disp('Btw Freq ' + lengthEAP-j);
+    EAP(2,j) = sum(EAP(1,:) == EAP(1,j))/lengthEAP;
     EAP(3,j) = sum(cmpEAP(1,:) == EAP(1,j))/(lengthHPL + lengthMWS);
     numer = str2double(EAP(2,j));
     denom = str2double(EAP(3,j));
@@ -65,7 +55,15 @@ for j = 1:lengthEAP
         EAP(4,j) = numer/denom;
     end
 end
+disp('Calculations End');
 
+% Now that we have the frequency within it is time to look at the frequency
+% of a word one author uses relative to the other two authors. 
+% This fiqure is calculated by dividing the number of occurences of the word divided by
+% the number of elements nthe other two authors
+% Last figure is the frequency within divided by the frequency in others
+
+disp('Formatting begins');
 %format the lists
 for i = 1:lengthEAP_Final
     disp('format-outer ' + lengthEAP_Final-i);
@@ -79,3 +77,4 @@ for i = 1:lengthEAP_Final
        end
    end
 end
+disp('Formatting Ends');
