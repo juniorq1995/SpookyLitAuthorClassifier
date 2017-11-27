@@ -13,9 +13,9 @@ trainDataArray = table2array(trainDataTable);
 EAP = [];
 HPL = [];
 MWS = [];
-for i = 1:length
+for i = 1:100
     str = string(trainDataArray(i,2));
-    disp('Huge Array Index' + length-i);
+    disp(length-i);
     %remove punctuation
     strn = regexprep(str,'[!@#$%^&*():;",.?<>/'']','');
     
@@ -45,6 +45,7 @@ EAP = [EAP;zeros(1,lengthEAP);zeros(1,lengthEAP);zeros(1,lengthEAP)];
 cmpEAP = [HPL MWS];
 disp('Calculations Begin');
 for j = 1:lengthEAP
+    disp(lengthEAP-j);
     EAP(2,j) = sum(EAP(1,:) == EAP(1,j))/lengthEAP;
     EAP(3,j) = sum(cmpEAP(1,:) == EAP(1,j))/(lengthHPL + lengthMWS);
     numer = str2double(EAP(2,j));
@@ -65,10 +66,11 @@ disp('Calculations End');
 
 disp('Formatting begins');
 %format the lists
+count = 0;
 for i = 1:lengthEAP_Final
-    disp('format-outer ' + lengthEAP_Final-i);
    for j = 1:lengthEAP
-       disp('format-inner ' + lengthEAP-j);
+       count = count + 1;
+       disp((lengthEAP_Final * lengthEAP)-count);
        if(EAP_Final(1,i) == EAP(1,j))
            EAP_Final(2,i) = EAP(2,j);
            EAP_Final(3,i) = EAP(3,j);
