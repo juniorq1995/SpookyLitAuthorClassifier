@@ -75,6 +75,7 @@ for i = 1:lengthEAP_Final
            EAP_Final(2,i) = EAP(2,j);
            EAP_Final(3,i) = EAP(3,j);
            EAP_Final(4,i) = EAP(4,j);
+           break
        end
    end
 end
