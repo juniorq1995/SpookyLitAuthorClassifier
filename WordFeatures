@@ -3,6 +3,25 @@ teir literature. The words are listed next to figures that illustrate this, one 
 while the other statistic represents the number of times a word in one author's vocabulary was used by the other two. Finally,
 a ratio divides the two measurements to give a quick way to dtermine a word's worthiness to be a part of our feature list.
 
+Common Words That ID a person's speech pattern:
+  thus-
+  the-
+  another-
+  who-
+  what-
+  when-
+  where-
+  who-
+  theirs-
+  these-
+  those-
+  myself-
+  yourself-
+  himself-
+  herself-
+  each-
+  another-
+
 EAP:
   abyss-
   afflicted-
