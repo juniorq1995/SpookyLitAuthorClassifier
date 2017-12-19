@@ -69,22 +69,21 @@ end
 % with a height equal to the number of sentences, where each sentence is a
 % weight.
 % 
-% So to get X this will be the size of sentences I have, and each word will
-% be placed in the following col, O(NM) time.
+% Additionally I'll note that the words chosen are to some extent
+% arbitrary. We've been basing words by each author off of other research
+% into each author based off of word use frequency. Additionally we've been
+% avoiding nouns and names as even though some authors use them more often
+% than others it can still throw off the data significantly. Lastly after
+% taking this into account, we've use/thrown out words with high or low
+% weights, where high weights suggest it's more relevant than a low weight.
 % 
-% WORDS CHOSEN BELOW ARE LARGELY ARBITRARY, I HAVE NOT FOUND THE OPTIMAL
-% WORDS YET, I'M NOT SURE HOW TO DO THIS YET HOwever I think a certain
-% degree of it is intuitive, and the rest is I'll just grab a bunch of
-% popular words, and I'll make a matrix that is easy to change size to calc
-% the words. I will add that it was heavlily influenced by the .xlsx shhet
-% from spooky.m
-% 
-% Through trial and error we've found that using things like nouns or names
-% can skew sentence's significantly, even though some authors are knows to
-% use certain names or things more frequently than others.
+% MWS [1]
+% ELP [2]
+% HPL [3][4]
 
+% List of words we've chosen, we've limited the size so that the matrix
+% multiplication may still run quickly.
 words = {'ascertain','lay','my','surcingle','hand','thus','to','nor','subject','suffer','and','love','pain','dark','the',';','you'};
-% {} break it into strings or cells
 [wn,wm] = size(words);
 
 data = zeros(wm,n);
@@ -96,7 +95,7 @@ for i = 1:wm
     end
 end
 
-% I accidentally built this upsidown, remove transpose later and fix algo
+% Flipping matrix as it was accidentally built upsidown.
 X = transpose(data);
 
 % Now we must build the y matrix, it would be best to incorperate this in
@@ -164,7 +163,7 @@ for i = 1:n
     end
 end
 
-fprintf('There were %i right answers out of %i\n', sum, n);
+fprintf('There were %i right answers out of %i, which equals a %2.2d correct percentage.\n', sum, n, (sum/n)*100);
 
 %% Lasso use
 
@@ -194,13 +193,13 @@ plot(B)
 % [0] Spooky Author Identification compeition:
 %       https://www.kaggle.com/c/spooky-author-identification
 % 
-% [1] 
+% [1] https://www.vocabulary.com/lists/344129
 % 
+% [2] https://www.vocabulary.com/lists/285259
 % 
+% [3] https://www.tor.com/2011/03/01/lovecraft-favorite-words-free-ebook/
 % 
-% 
-% 
-% 
+% [4] http://arkhamarchivist.com/wordcount-lovecraft-favorite-words/
 % 
 % 
 % 
