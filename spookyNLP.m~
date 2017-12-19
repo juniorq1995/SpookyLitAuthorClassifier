@@ -1,8 +1,8 @@
 %% Horror Author testing
 % By Thomas Hansen and Junior Quintero
 % 
-% In our project we've decided to use our dataset off of the Kaggle Spooky
-% Author Identification compeition[0]
+% In our project we've decided to use our dataset off of the Kaggle
+% competition here: https://www.kaggle.com/c/spooky-author-identification
 % 
 % Here we're given a large dataset and testing set of data for comparing
 % work done by different horror authors, and our goal will be to tell if we
@@ -14,8 +14,7 @@
 % the data, such as changing the number of senteces we read in at a time to
 % improve accuracy, or trying new tequniques not used in class.
 
-% For this project you may want to have matlabNLP installed for some
-% versions.
+% For this project yoYou'll want to have matlabNLP installed for later portions.
 
 % read in file, set training data to td
 filename = 'train.csv';
@@ -24,6 +23,8 @@ td = table2array(file);
 
 % Shorten td to reasonable size, can remove later
 % td = td(1:10000,:);
+
+% From here juniors thing says to break up according to each auther, 
 
 [n,m] = size(td);
 
@@ -48,7 +49,7 @@ if (n == (eap_occurance + hpl_occurance + mws_occurance))
 end
 
 %% Categorizing their text
-% Now that we have the size of each required array, we can enter each word
+% now that we have the size of each required array, we can enter each word
 % into an array for the three authors, and then compare them directly that
 % way.
 % 
@@ -191,10 +192,9 @@ plot(B)
 
 
 %% References
-% [0] Spooky Author Identification compeition:
-%       https://www.kaggle.com/c/spooky-author-identification
 % 
-% [1] 
+% 
+% 
 % 
 % 
 % 
