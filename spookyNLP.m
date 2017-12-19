@@ -181,17 +181,17 @@ lassoPlot(B,FitInto,'PlotType','Lambda','XScale','log');
 %% References
 % [0] Spooky Author Identification | Kaggle, www.kaggle.com/c/spooky-author-identification.
 % 
-% [1] November 22, 2013	By Andy H. (NY). “Mary Shelley's Frankenstein.” Vocabulary.com, www.vocabulary.com/lists/344129.
+% [1] November 22, 2013 By Andy H. (NY). Mary Shelley's Frankenstein. Vocabulary.com, www.vocabulary.com/lists/344129.
 % 
-% [2] (NY), July 25 2013	By Vocabulary.com. “Poe's Favorite Words, collected by Charles Harrington Elster.” Vocabulary.com, www.vocabulary.com/lists/285259.
+% [2] (NY), July 25 2013 By Vocabulary.com. Poe's Favorite Words, collected by Charles Harrington Elster. Vocabulary.com, www.vocabulary.com/lists/285259.
 % 
-% [3] “H.P. Lovecraft’s 10 Favorite Words and a Free Lovecraft eBook.” Tor.com, 14 Dec. 2014, www.tor.com/2011/03/01/lovecraft-favorite-words-free-ebook/.
+% [3] H.P. Lovecrafts 10 Favorite Words and a Free Lovecraft eBook. Tor.com, 14 Dec. 2014, www.tor.com/2011/03/01/lovecraft-favorite-words-free-ebook/.
 % 
-% [4] “Wordcount for Lovecraft’s Favorite Words.” The Arkham Archivist Wordcount for Lovecrafts Favorite Words Comments, arkhamarchivist.com/wordcount-lovecraft-favorite-words/.
+% [4] Wordcount for Lovecraft’s Favorite Words. The Arkham Archivist Wordcount for Lovecrafts Favorite Words Comments, arkhamarchivist.com/wordcount-lovecraft-favorite-words/.
 % 
-% [5] Green, Rachel M, and John W Sheppard. “Comparing Frequency- and Style-Based Features for Twitter Author Identification.” Proceedings of the Twenty-Sixth International Florida Artificial Intelligence Research Society Conference, www.aaai.org/ocs/index.php/FLAIRS/FLAIRS13/paper/viewFile/5917/6043.
+% [5] Green, Rachel M, and John W Sheppard.�Comparing Frequency- and Style-Based Features for Twitter Author Identification.� Proceedings of the Twenty-Sixth International Florida Artificial Intelligence Research Society Conference, www.aaai.org/ocs/index.php/FLAIRS/FLAIRS13/paper/viewFile/5917/6043.
 % 
-% [6] Zhao, Peng, and Bin Yu. “On Model Selection Consistency of Lasso.” Journal of Machine Learning Research, vol. 7, Nov. 2006, pp. 2541–2563., www.jmlr.org/papers/volume7/zhao06a/zhao06a.pdf.
+% [6] Zhao, Peng, and Bin Yu. “On Model Selection Consistency of Lasso. Journal of Machine Learning Research, vol. 7, Nov. 2006, pp. 2541�2563., www.jmlr.org/papers/volume7/zhao06a/zhao06a.pdf.
 % 
 % 
 % 
