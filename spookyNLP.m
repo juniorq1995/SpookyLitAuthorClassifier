@@ -1,7 +1,7 @@
 %% Spooky Author testing
 % By Thomas Hansen and Junior Quintero
 % 
-% In our project we've decided to use our dataset off of the Kaggle Spooky
+% In our project we've decided to use our dataset from the Kaggle Spooky
 % Author Identification compeition[0]
 % 
 % Here we're given a large dataset and testing set of data for comparing
@@ -83,7 +83,7 @@ end
 
 % List of words we've chosen, we've limited the size so that the matrix
 % multiplication may still run quickly.
-words = {'ascertain','lay','my','surcingle','hand','thus','to','nor','subject','suffer','and','love','pain','dark','the',';','you'};
+words = {'ascertain','lay','my','surcingle','hand','thus','to','nor','subject','suffer','and','love','pain','dark','the',';','you','another','who','what','when','where','whom','agony','joy','bed','breakfast','dinner','lunch','room','door','bird','book','watch','shoe','dress','village','family','cat','dog','misery','abyss','sullen','lofty','writhe','wretched','endeavor','ghastly','grotesque','frenzied','crypt','afflicted','abyss','curse','abnormal','faint','hideous','mad','noise','sinister','poetry','story','immortal','frankenstein','monnster','town','village','cry'};
 [wn,wm] = size(words);
 
 data = zeros(wm,n);
@@ -98,7 +98,7 @@ end
 % Flipping matrix as it was accidentally built upsidown.
 X = transpose(data);
 
-% Now we must build the y matrix, it would be best to incorperate this in
+% Now we must build the y matrix, it would be best to incorporate this in
 % with the above algo later on, though the O(N^2) time complexity remains
 % the same.
 y = zeros(n,1);
@@ -122,7 +122,7 @@ test = test(10000:10999,:);
 n = length(test);
 
 % We need to set up the environment by copying and pasting the code from
-% above but with test
+% above but with a test
 X_test = zeros(wm,n);
 for i = 1:wm
     for j = 1:n
@@ -146,7 +146,7 @@ for i = 1:n
     end
 end
 
-% and to test it to see easily how many were right
+% Now we test it to see easily how many were right
 vals = zeros(20,2);
 for i = 1:n
     vals(i,1) = y_hat(i);
@@ -167,27 +167,16 @@ fprintf('There were %i right answers out of %i, which equals a %2.2d correct per
 
 %% Lasso use
 
+% For comparison here is the result of the built in LASSO regression on the
+% data
 [B, FitInto] = lasso(X,y);
-
-plot(B)
-
+lassoPlot(B,FitInto,'PlotType','Lambda','XScale','log');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%The plot shows the nonzero coefficients in the regression for various values of the Lambda regularization parameter. Larger values of Lambda appear on the left side of the graph, meaning more regularization, resulting in fewer nonzero regression coefficients.
+%The dashed vertical lines represent the Lambda value with minimal mean squared error (on the right), and the Lambda value with minimal mean squared error plus one standard deviation. This latter value is a recommended setting for Lambda. These lines appear only when you perform cross validation. Cross validate by setting the 'CV' name-value pair. This example uses 10-fold cross validation.
+%The upper part of the plot shows the degrees of freedom (df), meaning the number of nonzero coefficients in the regression, as a function of Lambda. On the left, the large value of Lambda causes all but one coefficient to be 0. On the right all five coefficients are nonzero, though the plot shows only two clearly. The other three coefficients are so small that you cannot visually distinguish them from 0.
+%For small values of Lambda (toward the right in the plot), the coefficient values are close to the least-squares estimate. 
 
 %% References
 % [0] Spooky Author Identification | Kaggle, www.kaggle.com/c/spooky-author-identification.
@@ -207,4 +196,4 @@ plot(B)
 % 
 % 
 % 
-% 
+%
