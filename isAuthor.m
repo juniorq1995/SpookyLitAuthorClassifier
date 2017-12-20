@@ -1,7 +1,7 @@
 function auth = isAuthor(words, sentence, w)
     X_func = zeros(1,length(words));
     for i = 1:length(words)
-        % wordLoc = strfind(sentence{1,2}, words{i}); % if the word exists in the sentence
+%         wordLoc = strfind(sentence{1,2}, words{i}); % if the word exists in the sentence
         wordLoc = strfind(sentence, words{i}); % use me if just string input
         X_func(i) = length(wordLoc); % how many times the word shows up
     end

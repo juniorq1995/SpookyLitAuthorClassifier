@@ -100,7 +100,7 @@ X = transpose(data);
 
 % Now we must build the y matrix, it would be best to incorporate this in
 % with the above algo later on, though the O(N^2) time complexity remains
-% the same.
+% the same. This will be the true value y matrix.
 y = zeros(n,1);
 for i = 1:n
     if (length(strfind(td{i,3}, 'EAP')) >= 1)
@@ -116,6 +116,7 @@ w = X\y;
 % And then we'll test it for EAP in the next 10 matricies
 
 %% Testing on small sample set
+% here we're testing our results on a sample set of 1000.
 
 test = table2array(file);
 test = test(10000:10999,:);
@@ -124,14 +125,13 @@ n = length(test);
 % We need to set up the environment by copying and pasting the code from
 % above but with a test
 X_test = zeros(wm,n);
-for i = 1:wm
-    for j = 1:n
-        wordLoc = strfind(test{j,2}, words{i});
-        X_test(i,j) = length(wordLoc);
+for i = 1:wm % for each word
+    for j = 1:n % for each sentence
+        wordLoc = strfind(test{j,2}, words{i}); % if the word exists in the sentence
+        X_test(i,j) = length(wordLoc); % how many times the word shows up
     end
 end
-
-X_test = transpose(X_test);
+X_test = transpose(X_test); % corrects the matrix orientation
 
 % So the predicted vector is 
 y_hat = X_test*w;
@@ -165,6 +165,173 @@ end
 
 fprintf('There were %i right answers out of %i, which equals a %2.2d correct percentage.\n', sum, n, (sum/n)*100);
 
+%%%%%%%%%%%%%%%%%
+%% TO TEST THAT MY FUNCITON WORKS CORRECTLY, I'M RUNNING DELETE LATER
+% This produces a similar value but not the same?????????
+% que es rico
+% tmp = zeros(1,length(test));
+% for i = 1:length(test)
+%    % we run the function on each sentence
+%    tmp(i) = isAuthor(words, test(i,:), w);
+% end
+% 
+% newSum = 0;
+% denom = 0;
+% for i = 1:length(y_expected)
+%     denom = denom + 1;
+%     if (sign(y_expected(i)) == sign(tmp(1,i)))
+%         newSum = newSum + 1;
+%     end
+% end
+% newSum/denom
+% THE ABOVE IS THE SAME AS 
+isAuthors(test, words, w, y_expected)
+
+%% 
+% Here the goal is to run the same algorithm we ran in the least squares
+% section, however now we'll want to input multiple sentences to see if we
+% can improve our ability to distinguish one author from another.
+% Eventually we'll be putting this in a makeshift decision tree, where
+% it'll determine which of the three authors wrote it.
+% 
+% First we count and split the test data into each of the authors
+filename = 'train.csv';
+file = readtable(filename);
+td = table2array(file);
+td = td(18000:end,:); % starts at quasi random point near the end
+
+[n,m] = size(td);
+
+sentence_size = 100;
+
+eap_occurance = 0;
+eap_sentences = cell(1,sentence_size);
+hpl_occurance = 0;
+hpl_sentences = cell(1,sentence_size);
+mws_occurance = 0;
+mws_sentences = cell(1,sentence_size);
+for i = 1:n
+    if strcmp(td(i,3),'EAP')
+        eap_occurance = eap_occurance + 1;
+        if (eap_occurance <= sentence_size)
+            eap_sentences{eap_occurance} = td(i,2);
+        end
+    elseif strcmp(td(i,3),'HPL')
+        hpl_occurance = hpl_occurance + 1;
+        if (hpl_occurance <= sentence_size)
+            hpl_sentences{hpl_occurance} = td(i,2);
+        end
+    elseif strcmp(td(i,3),'MWS')
+        mws_occurance = mws_occurance + 1;
+        if (mws_occurance <= sentence_size)
+            mws_sentences{mws_occurance} = td(i,2);
+        end
+    else
+        fprinf('Didnt work on line %i\n', i);
+    end
+end
+
+% This total should now equal n
+if (n == (eap_occurance + hpl_occurance + mws_occurance))
+    fprintf('number of names categorized correctly.\n');
+end
+
+% Now that we have cell arrays of each of the 3 authors, we can show that
+% this will more readily prove 
+
+tmp = zeros(1,length(eap_sentences));
+for i = 1:length(eap_sentences)
+   % we run the function on each sentence
+   tmp(i) = isAuthor(words, eap_sentences{i}, w);
+end
+
+newSum = 0;
+denom = 0;
+for i = 1:length(eap_sentences);
+    denom = denom + 1;
+    if (sign(y_expected(i)) == sign(tmp(1,i)))
+        newSum = newSum + 1;
+    end
+end
+fprintf('So on average it correctly guesses EAP sentences %2.1d percent of the time', 100*(newSum/denom));
+
+%% Using a decision tree to improve LSR
+% sentence multiple times it'll decide it's either EAP, HPL or MWS.
+% 
+% First we need to generate the different weights for each author.
+eap_w = w;
+hpl_w = w;
+mws_w = w;
+% hpl_w = generate_w();
+% mws_w = generate_w();
+
+% And given the sets of sentences from each of the authors, we can use a
+% for loop and the isAuthor function to determine whether each sentence is
+% part of the author or not. If it isn't, the decision tree will break down
+% and try another author. If it recieves a positive result, it'll continue
+% on to say who it is.
+%                       input sentences
+%                        isAuthor(EAP)
+%                     no /  < 50% <   \ yes
+%                       /              \
+%               isAuthor(HLP)          EAP
+%           no /  < 50% <   \ yes
+%             /              \
+%         isAuthor(MWS)      HLP
+%     no /  < 50% <   \ yes
+%  use highest         \
+%   saved %            MWS
+%  /    |   \
+% EAP  HPL  MWS
+% 
+% Decision Tree implementation:
+
+% X_auth_sent = eap_sentences'; % n = 50; decision here is arbitrary
+X_auth_sent = cell(sentence_size,3);
+tmp_cell = eap_sentences';
+X_auth_sent(:,2) = tmp_cell(:,1);
+
+y_auth_expected = ones(sentence_size,3); % This just means that they're all the
+% correct author, since X is the same
+
+eap_percent = isAuthors(X_auth_sent, words, eap_w, y_auth_expected)
+%% 
+if (eap > .5)
+    % Then it's EAP
+    fprintf('Sentences were by EAP\n');
+else
+    hpl_percent = isAuthors(X_auth_sent, words, hpl_w, y_auth_expected);
+    if (hpl_percent > .5)
+        % Then it's HPL
+        fprintf('Sentences were by HPL\n');
+    else
+        mws_percent = isAuthors(X_auth_sent, words, mws_w, y_auth_expected);
+        if (mws_percent > .5)
+            % Then it's MWS
+            fprintf('Sentences were by MWS\n');
+        else
+            % Here they're all below our margin of error
+            if (eap_percent > hpl_percent && eap_percent > mws_percent)
+                % It's EAP
+                fprintf('Sentences were by EAP, caught on second round.\n');
+            elseif (hpl_percent > eap_percent && hpl_percent > mws_percent)
+                % It's HPL
+                fprintf('Sentences were by HPL, caught on second round.\n');
+            else
+                % It's MWS or they all match percentages
+                fprintf('Sentences were by MWS, caught on second round.\n');
+            end
+        end
+    end
+end
+
+% So the function 
+%               isAuthors(test, words, w, y_expected)
+% Is used to return the percentage of results. Additionally it's done in a
+% fashion where each if is embeded in an else, and this is done to reduce
+% the number of computations needed, while still saving the percentage
+% values.
+
 %% Lasso use
 
 % For comparison here is the result of the built in LASSO regression on the
@@ -173,10 +340,28 @@ fprintf('There were %i right answers out of %i, which equals a %2.2d correct per
 lassoPlot(B,FitInto,'PlotType','Lambda','XScale','log');
 
 
-%The plot shows the nonzero coefficients in the regression for various values of the Lambda regularization parameter. Larger values of Lambda appear on the left side of the graph, meaning more regularization, resulting in fewer nonzero regression coefficients.
-%The dashed vertical lines represent the Lambda value with minimal mean squared error (on the right), and the Lambda value with minimal mean squared error plus one standard deviation. This latter value is a recommended setting for Lambda. These lines appear only when you perform cross validation. Cross validate by setting the 'CV' name-value pair. This example uses 10-fold cross validation.
-%The upper part of the plot shows the degrees of freedom (df), meaning the number of nonzero coefficients in the regression, as a function of Lambda. On the left, the large value of Lambda causes all but one coefficient to be 0. On the right all five coefficients are nonzero, though the plot shows only two clearly. The other three coefficients are so small that you cannot visually distinguish them from 0.
-%For small values of Lambda (toward the right in the plot), the coefficient values are close to the least-squares estimate. 
+% The plot shows the nonzero coefficients in the regression for various
+% values of the Lambda regularization parameter. Larger values of Lambda
+% appear on the left side of the graph, meaning more regularization,
+% resulting in fewer nonzero regression coefficients.
+% 
+% The dashed vertical lines represent the Lambda value with minimal mean
+% squared error (on the right), and the Lambda value with minimal mean
+% squared error plus one standard deviation. This latter value is a recommended
+% setting for Lambda. These lines appear only when you perform cross validation.
+% Cross validate by setting the 'CV' name-value pair. This example uses
+% 10-fold cross validation.
+% 
+% The upper part of the plot shows the degrees of freedom (df), meaning the
+% number of nonzero coefficients in the regression, as a function of Lambda.
+% On the left, the large value of Lambda causes all but one coefficient to
+% be 0. On the right all five coefficients are nonzero, though the plot shows
+% only two clearly. The other three coefficients are so small that you cannot
+% visually distinguish them from 0.
+%
+% For small values of Lambda (toward the right in the plot), the
+% coefficient values are close to the least-squares estimate.
+% 
 
 %% References
 % [0] Spooky Author Identification | Kaggle, www.kaggle.com/c/spooky-author-identification.
