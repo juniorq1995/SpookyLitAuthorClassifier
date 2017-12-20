@@ -1,5 +1,5 @@
-%% ECE532: Spooky Author NLP and LSR
-%% By Thomas Hansen and Junior Quintero
+%% Spooky Author testing
+% By Thomas Hansen and Junior Quintero
 % 
 % In our project we've decided to use our dataset from the Kaggle Spooky
 % Author Identification compeition[0]
@@ -25,7 +25,7 @@ td = table2array(file);
 % Shorten td to reasonable size, can remove later
 % td = td(1:10000,:);
 
-[n,~] = size(td);
+[n,m] = size(td);
 
 eap_occurance = 0;
 hpl_occurance = 0;
@@ -165,6 +165,28 @@ end
 
 fprintf('There were %i right answers out of %i, which equals a %2.2d correct percentage.\n', sum, n, (sum/n)*100);
 
+%%%%%%%%%%%%%%%%%
+%% TO TEST THAT MY FUNCITON WORKS CORRECTLY, I'M RUNNING DELETE LATER
+% This produces a similar value but not the same?????????
+% que es rico
+% tmp = zeros(1,length(test));
+% for i = 1:length(test)
+%    % we run the function on each sentence
+%    tmp(i) = isAuthor(words, test(i,:), w);
+% end
+% 
+% newSum = 0;
+% denom = 0;
+% for i = 1:length(y_expected)
+%     denom = denom + 1;
+%     if (sign(y_expected(i)) == sign(tmp(1,i)))
+%         newSum = newSum + 1;
+%     end
+% end
+% newSum/denom
+% THE ABOVE IS THE SAME AS 
+isAuthors(test, words, w, y_expected)
+
 %% 
 % Here the goal is to run the same algorithm we ran in the least squares
 % section, however now we'll want to input multiple sentences to see if we
@@ -180,7 +202,7 @@ td = td(18000:end,:); % starts at quasi random point near the end
 
 [n,m] = size(td);
 
-sentence_size = 5;
+sentence_size = 100;
 
 eap_occurance = 0;
 eap_sentences = cell(1,sentence_size);
@@ -225,19 +247,21 @@ end
 
 newSum = 0;
 denom = 0;
-for i = 1:length(eap_sentences);
+for i = 1:length(eap_sentences)
     denom = denom + 1;
     if (sign(y_expected(i)) == sign(tmp(1,i)))
         newSum = newSum + 1;
     end
 end
 fprintf('So on average it correctly guesses EAP sentences %2.1d percent of the time', 100*(newSum/denom));
-%%
-% Using a decision tree to improve LSR
+
+%% Using a decision tree to improve LSR
 % sentence multiple times it'll decide it's either EAP, HPL or MWS.
+% 
+% First we need to generate the different weights for each author.
 eap_w = w;
-hpl_w = 2*rand(size(w)) - 1; % generates author weights
-mws_w = 2*rand(size(w)) - 1;
+hpl_w = w;
+mws_w = w;
 % hpl_w = generate_w();
 % mws_w = generate_w();
 
@@ -271,6 +295,7 @@ y_auth_expected = ones(sentence_size,3); % This just means that they're all the
 % correct author, since X is the same
 
 eap_percent = isAuthors(X_auth_sent, words, eap_w, y_auth_expected);
+%% 
 if (eap_percent > .5)
     % Then it's EAP
     fprintf('Sentences were by EAP\n');
@@ -287,7 +312,7 @@ else
         else
             % Here they're all below our margin of error
             if (eap_percent > hpl_percent && eap_percent > mws_percent)
-                % EAP had the most correct
+                % It's EAP
                 fprintf('Sentences were by EAP, caught on second round.\n');
             elseif (hpl_percent > eap_percent && hpl_percent > mws_percent)
                 % It's HPL
@@ -308,10 +333,12 @@ end
 % values.
 
 %% Lasso use
+
 % For comparison here is the result of the built in LASSO regression on the
 % data
 [B, FitInto] = lasso(X,y);
 lassoPlot(B,FitInto,'PlotType','Lambda','XScale','log');
+
 
 % The plot shows the nonzero coefficients in the regression for various
 % values of the Lambda regularization parameter. Larger values of Lambda
@@ -335,6 +362,7 @@ lassoPlot(B,FitInto,'PlotType','Lambda','XScale','log');
 % For small values of Lambda (toward the right in the plot), the
 % coefficient values are close to the least-squares estimate.
 % 
+
 %% References
 % [0] Spooky Author Identification | Kaggle, www.kaggle.com/c/spooky-author-identification.
 % 
@@ -344,9 +372,13 @@ lassoPlot(B,FitInto,'PlotType','Lambda','XScale','log');
 % 
 % [3] H.P. Lovecrafts 10 Favorite Words and a Free Lovecraft eBook. Tor.com, 14 Dec. 2014, www.tor.com/2011/03/01/lovecraft-favorite-words-free-ebook/.
 % 
-% [4] Wordcount for Lovecraft's Favorite Words. The Arkham Archivist Wordcount for Lovecrafts Favorite Words Comments, arkhamarchivist.com/wordcount-lovecraft-favorite-words/.
+% [4] Wordcount for Lovecraftâs Favorite Words. The Arkham Archivist Wordcount for Lovecrafts Favorite Words Comments, arkhamarchivist.com/wordcount-lovecraft-favorite-words/.
 % 
-% [5] Green, Rachel M, and John W Sheppard.�Comparing Frequency- and Style-Based Features for Twitter Author Identification.� Proceedings of the Twenty-Sixth International Florida Artificial Intelligence Research Society Conference, www.aaai.org/ocs/index.php/FLAIRS/FLAIRS13/paper/viewFile/5917/6043.
+% [5] Green, Rachel M, and John W Sheppard.Comparing Frequency- and Style-Based Features for Twitter Author Identification. Proceedings of the Twenty-Sixth International Florida Artificial Intelligence Research Society Conference, www.aaai.org/ocs/index.php/FLAIRS/FLAIRS13/paper/viewFile/5917/6043.
 % 
-% [6] Zhao, Peng, and Bin Yu.�On Model Selection Consistency of Lasso. Journal of Machine Learning Research, vol. 7, Nov. 2006, pp. 2541�2563., www.jmlr.org/papers/volume7/zhao06a/zhao06a.pdf.
+% [6] Zhao, Peng, and Bin Yu. âOn Model Selection Consistency of Lasso. Journal of Machine Learning Research, vol. 7, Nov. 2006, pp. 25412563., www.jmlr.org/papers/volume7/zhao06a/zhao06a.pdf.
 % 
+% 
+% 
+% 
+%
