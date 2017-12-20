@@ -5,7 +5,7 @@ function percentage = isAuthors(sentences, words, w, y_expected)
     size(sentences);
     for i = 1:sizen
        % we run the function on each sentence
-       tmp(i) = isAuthor(words, cell2mat(sentences{i,2}), w);
+       tmp(i) = isAuthor(words,  sentences{i,2}, w);
     end
     
     tmp(1:2)
