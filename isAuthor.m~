@@ -1,0 +1,45 @@
+function auth = isAuthor(initial, X, w)
+%     for i = 1:wm % for each word
+        for j = 1:n % for each sentence
+            wordLoc = strfind(test{j,2}, words{i}); % if the word exists in the sentence
+            X_test(i,j) = length(wordLoc); % how many times the word shows up
+        end
+        % TEST JUST ONE WORD
+    end
+    X_test = transpose(X_test); % corrects the matrix orientation
+
+    % So the predicted vector is 
+    y_hat = X_test*w;
+
+    % And we can compare this to the expected output, so 
+    y_expected = zeros(n,1);
+    for i = 1:n
+        if (length(strfind(test{i,3}, 'EAP')) >= 1)
+            y_expected(i) = +1;
+        else
+            y_expected(i) = -1;
+        end
+    end
+    % BUT JUST ENDING IN ONE VALUE IN Y MATRIX
+
+    
+    
+    % Now we test it to see easily how many were right
+%     vals = zeros(20,2);
+%     for i = 1:n
+%         vals(i,1) = y_hat(i);
+%         vals(i,2) = y_expected(i);
+%     end
+% 
+%     % sum up right answers 
+%     sum = 0;
+%     for i = 1:n
+%         if (sign(vals(i,1)) == sign(vals(i,2)))
+%             sum = sum + 1;
+%             vals(i,1);
+%             vals(i,2);
+%         end
+%     end
+% 
+%     fprintf('There were %i right answers out of %i, which equals a %2.2d correct percentage.\n', sum, n, (sum/n)*100);
+end
